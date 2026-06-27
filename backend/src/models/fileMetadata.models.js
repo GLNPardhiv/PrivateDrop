@@ -5,6 +5,7 @@ const fileSchema = new mongoose.Schema({
   originalName: { type: String, required: true },
   mimeType: { type: String, required: true },
   size: { type: Number, required: true },
+  originalSize: { type: Number, required: true }, // Original size before encryption
   uploadDate: { type: Date, default: Date.now },
   expirationDate: { type: Date, required: true },
   // optional: track if file has been downloaded

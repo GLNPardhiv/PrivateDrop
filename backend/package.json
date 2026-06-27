@@ -15,9 +15,11 @@
     "@aws-sdk/lib-storage": "^3.1075.0",
     "@aws-sdk/s3-request-presigner": "^3.1075.0",
     "busboy": "^1.6.0",
+    "cors": "^2.8.6",
     "crypto-js": "^4.2.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "helmet": "^8.2.0",
     "mongoose": "^9.7.2",
     "nodemon": "^3.1.14"
   }
