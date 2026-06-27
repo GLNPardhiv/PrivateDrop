@@ -52,8 +52,7 @@ const updateProgress = (() => {
     setProgress(0);
     try {
       const { response } = await downloadFileStream(fileId);
-    // Use the response body directly (only consumed once)
-    const encryptedStream = response.clone().body;
+    // We'll clone the response for each usage to avoid locked streams
       const hasFilePicker = 'showSaveFilePicker' in window;
 
       if (hasFilePicker) {
@@ -66,7 +65,8 @@ const updateProgress = (() => {
             }],
           });
 
-          const writable = await handle.createWritable();
+          const encryptedStream = response.clone().body;
+            const writable = await handle.createWritable();
 const decryptedStream = await decryptStream(encryptedStream, info.key, info.iv, info.originalSize, updateProgress);
           const reader = decryptedStream.getReader();
           while (true) {
@@ -86,7 +86,8 @@ const decryptedStream = await decryptStream(encryptedStream, info.key, info.iv, 
         }
       }
 
-      // OPTIMIZATION: Direct pipe reading from response.body instead of duplicate clone copies
+      // Use a fresh cloned stream for the fallback path
+            const encryptedStream = response.clone().body;
       const decryptedStream = await decryptStream(encryptedStream, info.key, info.iv, info.originalSize, updateProgress);
       const chunks = [];
       const reader = decryptedStream.getReader();
