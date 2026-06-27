@@ -42,8 +42,8 @@ function sendMessage(type, payload, transferables = []) {
  */
 export async function encryptChunksParallel(key, baseIV, chunks, startCounter) {
   const rawKey = key instanceof CryptoKey ? new Uint8Array(await crypto.subtle.exportKey('raw', key)) : key;
-  const transferables = chunks.map(c => c.buffer);
-  const result = await sendMessage('ENCRYPT_CHUNKS', { rawKey, baseIV, chunks, startCounter }, transferables);
+  // Transfer without using transferables to avoid detaching shared buffers
+  const result = await sendMessage('ENCRYPT_CHUNKS', { rawKey, baseIV, chunks, startCounter });
   return result.chunks;
 }
 
@@ -53,8 +53,8 @@ export async function encryptChunksParallel(key, baseIV, chunks, startCounter) {
  */
 export async function decryptChunksParallel(key, baseIV, chunks, startCounter) {
   const rawKey = key instanceof CryptoKey ? new Uint8Array(await crypto.subtle.exportKey('raw', key)) : key;
-  const transferables = chunks.map(c => c.buffer);
-  const result = await sendMessage('DECRYPT_CHUNKS', { rawKey, baseIV, chunks, startCounter }, transferables);
+  // Transfer without using transferables to avoid detaching shared buffers
+  const result = await sendMessage('DECRYPT_CHUNKS', { rawKey, baseIV, chunks, startCounter });
   return result.chunks;
 }
 
