@@ -53,7 +53,7 @@ const updateProgress = (() => {
     try {
       const { response } = await downloadFileStream(fileId);
     // Use the response body directly (only consumed once)
-    const encryptedStream = response.body;
+    const encryptedStream = response.clone().body;
       const hasFilePicker = 'showSaveFilePicker' in window;
 
       if (hasFilePicker) {
